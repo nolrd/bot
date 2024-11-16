@@ -16,14 +16,67 @@ module.exports = (bot) => {
                 6: { name: 'Шифр Малика', amount: 5, file: '6.txt' },
             },
         },
-        'ТЗИ': {
+        'Аттестации': {
             tasks: {
-                1: { name: 'T1', amount: 5, file: '7.txt' },
-                2: { name: 'T2', amount: 5, file: '8.txt' },
-                3: { name: 'T3', amount: 5, file: '9.txt' },
-                4: { name: 'T4', amount: 5, file: '10.txt' },
-                5: { name: 'Отчет по УП пример', amount: 5, file: '11.txt' },
-                6: { name: 'Защита помещений', amount: 5, file: '12.txt' },
+                1: { name: 'Тест 1', amount: 500, file: 'att1.txt' },
+                2: { name: 'Тест 2', amount: 500, file: 'att2.txt' },
+            },
+        },
+        'Тесты': {
+            tasks: {
+                1: { name: 'Тест 1', amount: 200, file: 'test1.txt' },
+                2: { name: 'Тест 2', amount: 200, file: 'test2.txt' },
+                3: { name: 'Тест 3', amount: 200, file: 'test3.txt' },
+                4: { name: 'Тест 4', amount: 200, file: 'test4.txt' },
+                5: { name: 'Тест 5', amount: 200, file: 'test5.txt' },
+                6: { name: 'Тест 6', amount: 200, file: 'test6.txt' },
+                7: { name: 'Тест 7', amount: 200, file: 'test7.txt' },
+                7: { name: 'Зачетный тест', amount: 500, file: 'test8.txt' },
+            },
+        },
+        'Лекции': {
+            tasks: {
+                1: { name: 'ЛК1', amount: 100, file: 'LK1.txt' },
+                2: { name: 'ЛК2', amount: 100, file: 'LK2.txt' },
+                3: { name: 'ЛК3', amount: 100, file: 'LK3.txt' },
+                4: { name: 'ЛК4', amount: 100, file: 'LK4.txt' },
+                5: { name: 'ЛК5', amount: 100, file: 'LK5.txt' },
+                6: { name: 'ЛК6', amount: 100, file: 'LK6.txt' },
+                7: { name: 'ЛК7', amount: 100, file: 'LK7.txt' },
+                8: { name: 'ЛК8', amount: 100, file: 'LK8.txt' },
+                9: { name: 'ЛК9', amount: 100, file: 'LK9.txt' },
+                10: { name: 'ЛК10', amount: 100, file: 'LK10.txt' },
+                11: { name: 'ЛК11', amount: 100, file: 'LK11.txt' },
+                12: { name: 'ЛК12', amount: 100, file: 'LK12.txt' },
+                13: { name: 'ЛК13', amount: 100, file: 'LK13.txt' },
+                14: { name: 'ЛК14', amount: 100, file: 'LK14.txt' },
+                15: { name: 'ЛК15', amount: 100, file: 'LK15.txt' },
+                16: { name: 'ЛК16', amount: 100, file: 'LK16.txt' },
+                17: { name: 'ЛК17', amount: 100, file: 'LK17.txt' },
+                18: { name: 'ЛК18', amount: 100, file: 'LK18.txt' },
+                19: { name: 'ЛК19', amount: 100, file: 'LK19.txt' },
+                20: { name: 'ЛК20', amount: 100, file: 'LK20.txt' },
+                21: { name: 'ЛК21', amount: 100, file: 'LK21.txt' },
+                22: { name: 'ЛК22', amount: 100, file: 'LK22.txt' },
+                23: { name: 'ЛК23', amount: 100, file: 'LK23.txt' },
+                24: { name: 'ЛК24', amount: 100, file: 'LK24.txt' },
+                25: { name: 'ЛК25', amount: 100, file: 'LK25.txt' },
+                26: { name: 'ЛК26', amount: 100, file: 'LK26.txt' },
+                27: { name: 'ЛК27', amount: 100, file: 'LK27.txt' },
+                28: { name: 'ЛК28', amount: 100, file: 'LK28.txt' },
+                29: { name: 'ЛК29', amount: 100, file: 'LK29.txt' },
+                30: { name: 'ЛК30', amount: 100, file: 'LK30.txt' },
+                31: { name: 'Все лекции', amount: 3000, file: 'LK33.txt' },
+            },
+        },
+        'Практические задания': {
+            tasks: {
+                1: { name: 'ПЗ1', amount: 300, file: 'PZ1.txt' },
+                2: { name: 'ПЗ2', amount: 500, file: 'PZ2.txt' },
+                3: { name: 'ПЗ3', amount: 500, file: 'PZ3.txt' },
+                4: { name: 'ПЗ4', amount: 500, file: 'PZ4.txt' },
+                5: { name: 'ПЗ5', amount: 500, file: 'PZ5.txt' },
+                6: { name: 'ПЗ6', amount: 500, file: 'PZ6.txt' },
             },
         },
     };
@@ -58,13 +111,13 @@ module.exports = (bot) => {
     });
 
     // Обработка выбора дисциплины
-    bot.hears('Выбрать дисциплину', (ctx) => {
+    bot.hears(['Выбрать дисциплину','Назад к дисциплинам'], (ctx) => {
         const userId = ctx.from.id;
 
         if (userState[userId]?.stage === '3 курс') {
             ctx.reply(
                 'Выберите дисциплину:',
-                Markup.keyboard([['МДК 02.01', 'ТЗИ', 'Главное меню']]).resize()
+                Markup.keyboard([['МДК 02.01', 'ЭАС','Главное меню']]).resize()
             );
         } else {
             ctx.reply('Сначала выберите "3 курс".');
@@ -72,7 +125,7 @@ module.exports = (bot) => {
     });
 
     // Обработка выбора дисциплины
-    bot.hears(['МДК 02.01', 'ТЗИ'], (ctx) => {
+    bot.hears(['МДК 02.01'], (ctx) => {
         const userId = ctx.from.id;
         const discipline = ctx.message.text;
 
@@ -83,13 +136,63 @@ module.exports = (bot) => {
                 Markup.keyboard(
                     Object.keys(disciplines[discipline].tasks)
                         .map((id) => [disciplines[discipline].tasks[id].name])
-                        .concat([['Главное меню']])
+                        .concat([['Назад к дисциплинам']])
                 ).resize()
             );
         } else {
             ctx.reply('Сначала выберите "3 курс".');
         }
     });
+
+    bot.hears(['ЭАС','Назад к задания ЭАС'], (ctx) => {
+        const userId = ctx.from.id;
+        ctx.reply(
+            'Ты выбрал дисциплину ЭАС.\nТеперь выбери задания.',
+            Markup.keyboard([['Аттестации', 'Лекции', 'Практические задания','Тесты', 'Назад к дисциплинам']])
+                .oneTime()
+                .resize()
+        );
+    });
+
+
+    bot.hears(['Аттестации', 'Лекции', 'Практические задания', 'Тесты',], (ctx) => {
+        const userId = ctx.from.id;
+        const discipline = ctx.message.text;
+
+        if (userState[userId]?.stage === '3 курс') {
+            userState[userId].discipline = discipline;
+            ctx.reply(
+                `Вы выбрали задачу: ${discipline}. Теперь выберите номер задания.`,
+                Markup.keyboard(
+                    Object.keys(disciplines[discipline].tasks)
+                        .map((id) => [disciplines[discipline].tasks[id].name])
+                        .concat([['Назад к задания ЭАС']])
+                ).resize()
+            );
+        } else {
+            ctx.reply('Сначала выберите "3 курс".');
+        }
+    });
+
+    // bot.hears(['ЛЕКЦИИ ПО ЭАС',], (ctx) => {
+    //     const userId = ctx.from.id;
+    //     const discipline = ctx.message.text;
+
+    //     if (userState[userId]?.stage === '3 курс') {
+    //         userState[userId].discipline = discipline;
+    //         ctx.reply(
+    //             `Вы выбрали дисциплину: ${discipline}. Теперь выберите лекцию.`,
+    //             Markup.keyboard(
+    //                 Object.keys(disciplines[discipline].tasks)
+    //                     .map((id) => [disciplines[discipline].tasks[id].name])
+    //                     .concat([['Главное меню']])
+    //             ).resize()
+    //         );
+    //     } else {
+    //         ctx.reply('Сначала выберите "3 курс".');
+    //     }
+    // });
+
 
     // Общий обработчик для выбора задания
     bot.hears(Object.values(disciplines).flatMap(d => Object.values(d.tasks).map(t => t.name)), (ctx) => {
