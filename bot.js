@@ -70,6 +70,12 @@ bot.on('text', (ctx) => {
     );
 });
 
+bot.on('sticker', (ctx) => {
+    ctx.reply(
+        'Извини, я тебя не понял. Перейди в главное меню и выбери функцию.',
+        Markup.keyboard([['Главное меню']]).resize()
+    );
+});
 // Запуск бота
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));

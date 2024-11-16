@@ -88,6 +88,7 @@ module.exports = (bot) => {
     // Функция для генерации уникального лейбла
     const generateLabel = () => crypto.randomBytes(16).toString('hex');
 
+
     // Обработка выбора курса
     bot.hears('3 курс', (ctx) => {
         const userId = ctx.from.id;
@@ -113,7 +114,6 @@ module.exports = (bot) => {
     // Обработка выбора дисциплины
     bot.hears(['Выбрать дисциплину','Назад к дисциплинам'], (ctx) => {
         const userId = ctx.from.id;
-
         if (userState[userId]?.stage === '3 курс') {
             ctx.reply(
                 'Выберите дисциплину:',
@@ -195,37 +195,49 @@ module.exports = (bot) => {
 
 
     // Общий обработчик для выбора задания
-    bot.hears(Object.values(disciplines).flatMap(d => Object.values(d.tasks).map(t => t.name)), (ctx) => {
+    bot.hears(Object.values(disciplines).flatMap(d => Object.values(d.tasks).map(t => t.name)), async (ctx) => {
         const userId = ctx.from.id;
         const discipline = userState[userId]?.discipline;
         const tasks = disciplines[discipline]?.tasks;
-
+    
         if (!tasks) return;
-
+    
         const selectedTask = Object.entries(tasks).find(
             ([, task]) => task.name === ctx.message.text
         );
-
+    
         if (selectedTask) {
             const [taskId, task] = selectedTask;
             const label = generateLabel();
-
-            // Сохраняем информацию о платеже с файлом
+    
+            // Проверяем, есть ли предыдущее сообщение
+            if (userSessions[userId]?.lastMessageId) {
+                try {
+                    await ctx.deleteMessage(userSessions[userId].lastMessageId);
+                } catch (err) {
+                    console.error('Ошибка при удалении сообщения:', err);
+                }
+            }
+    
+            // Сохраняем информацию о платеже и сообщении
             userSessions[userId] = {
                 discipline,
-                payment: { label, amount: task.amount, taskId, file: task.file }
+                payment: { label, amount: task.amount, taskId, file: task.file },
             };
-
+    
             // Генерация ссылки на оплату
             const paymentUrl = `https://yoomoney.ru/quickpay/confirm?receiver=4100117637877905&quickpay-form=shop&targets=${encodeURIComponent(task.name)}&paymentType=AC&sum=${task.amount}&label=${label}`;
-
-            ctx.reply(
+    
+            const message = await ctx.reply(
                 `Вы выбрали задание: ${task.name}. Сумма к оплате: ${task.amount} руб.`,
                 Markup.inlineKeyboard([
                     [Markup.button.url('Оплатить через ЮMoney', paymentUrl)],
                     [Markup.button.callback(`Проверить платеж`, `check_payment_${taskId}`)],
                 ]).resize()
             );
+    
+            // Сохраняем идентификатор нового сообщения
+            userSessions[userId].lastMessageId = message.message_id;
         }
     });
 
