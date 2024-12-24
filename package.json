@@ -1,0 +1,37 @@
+{
+  "name": "med",
+  "version": "0.0.1",
+  "description": "213 project",
+  "main": "bot.js",
+  "scripts": {
+    "maintance": "node maintance.js",
+    "start": "node bot.js",
+    "broadcast": "node broadcast.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nolrd/bot.git"
+  },
+  "author": "213 TEAM",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nolrd/bot/issues"
+  },
+  "dependencies": {
+    "3x-ui": "^2.1.1",
+    "axios": "^1.7.7",
+    "chalk": "^5.3.0",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "eventemitter3": "^5.0.1",
+    "fba": "file:",
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
+    "moment": "^2.30.1",
+    "node-telegram-bot-api": "^0.66.0",
+    "path": "^0.12.7",
+    "telegraf": "^4.16.3",
+    "telegram": "^2.26.8"
+  },
+  "homepage": "https://github.com/nolrd/bot#readme"
+}
